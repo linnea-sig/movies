@@ -3,6 +3,7 @@ const form = document.querySelector("#movieForm");
 const titleInput = document.querySelector("#title");
 const directorInput = document.querySelector("#director");
 const reviewInput = document.querySelector("#review");
+const ratingInput = document.querySelector("#rating");
 
 const errorText = document.querySelector("#error");
 
@@ -26,6 +27,8 @@ form.addEventListener("submit", function (event) {
     const title = titleInput.value.trim();
     const director = directorInput.value.trim();
     const review = reviewInput.value.trim();
+    const ratingText = ratingInput.value.trim();
+    const rating = Number(ratingText);
 
     if (title === "") {
         errorText.textContent = "Please eneter a title";
@@ -57,6 +60,16 @@ form.addEventListener("submit", function (event) {
         return;
     }
 
+    if (ratingText === "" || isNaN(rating)) {
+        errorText.textContent = "Please enter a number";
+        return;
+    }
+
+    if (rating < 1 || rating > 10) {
+        errorText.textContent = "Rating must be between 1 and 10";
+        return;
+    }
+
     for (let i = 0; i < movies.length; i++) {
         if (movies[i].title.toLowerCase() === title.toLowerCase()) {
             errorText.textContent = "This movie is alreday reviewed";
@@ -71,8 +84,9 @@ form.addEventListener("submit", function (event) {
     const newMovie = {
         title: title,
         director: director,
-        review: review
-    }
+        review: review,
+        rating: rating
+    };
 
     movies.push(newMovie);
     save();
@@ -80,6 +94,7 @@ form.addEventListener("submit", function (event) {
     titleInput.value = "";
     directorInput.value = "";
     reviewInput.value = "";
+    ratingInput.value = "";
 });
 
 
