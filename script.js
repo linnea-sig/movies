@@ -12,8 +12,16 @@ const removeLastBtn = document.querySelector("#removeLastBtn");
 const titlesBtn = document.querySelector("#titlesBtn");
 const clearBtn = document.querySelector("#clearBtn");
 
-const saved = localStorage.getItem("movies");
-const movies = JSON.parse(saved) || [];
+let movies = [];
+
+try {
+    const saved = localStorage.getItem("movies");
+    movies = JSON.parse(saved) || [];
+} catch (error) {
+    console.log("Could not read saved movies");
+}
+
+
 
 function save() {
     const text = JSON.stringify(movies);
@@ -107,19 +115,19 @@ listBtn.addEventListener("click", function () {
 
         const label = movies[i].rating >= 7 ? "Good" : "Weak";
 
-        console.log(`${i+1}. ${movies[i].title} (${lastName}) ${movies[i].rating}/10 - ${label}`);
+        console.log(`${i + 1}. ${movies[i].title} (${lastName}) ${movies[i].rating}/10 - ${label}`);
     }
 });
 
-removeLastBtn.addEventListener("click", function() {
+removeLastBtn.addEventListener("click", function () {
     movies.pop();
     save();
     console.log("Removed last. Left: " + movies.length)
 });
 
-titlesBtn.addEventListener("click", function() {
+titlesBtn.addEventListener("click", function () {
     const titles = [];
-    for(let i = 0; i < movies.length; i++) {
+    for (let i = 0; i < movies.length; i++) {
         titles.push(movies[i].title);
     }
     console.log(titles.join(", "));
@@ -127,8 +135,8 @@ titlesBtn.addEventListener("click", function() {
 
 
 
-clearBtn.addEventListener("click", function() {
-    movies.splice(0, movies.length); 
+clearBtn.addEventListener("click", function () {
+    movies.splice(0, movies.length);
     localStorage.removeItem("movies");
     console.log("All movie data has been removed!");
 })
